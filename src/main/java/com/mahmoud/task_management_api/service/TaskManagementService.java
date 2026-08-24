@@ -16,7 +16,7 @@ public class TaskManagementService {
     }
 
     public Task createTask(TaskRequest taskRequest){
-        return taskRepository.save(new Task(taskRequest.getTitle()));
+        return taskRepository.save(new Task(taskRequest.title()));
     }
 
     public Task getTaskById(Long id) {

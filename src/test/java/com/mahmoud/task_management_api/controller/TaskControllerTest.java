@@ -37,7 +37,7 @@ class TaskControllerTest {
 	@BeforeAll
 	public static void setup(){
 		taskRequest = new TaskRequest("test");
-		testTask = new Task(taskRequest.getTitle());
+		testTask = new Task(taskRequest.title());
 		testTask.setId(1L);
 
 	}

@@ -1,19 +1,6 @@
 package com.mahmoud.task_management_api.dto;
 
 
-public class TaskRequest {
+public record TaskRequest(String title) {
 
-    private String title;
-
-    public TaskRequest(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

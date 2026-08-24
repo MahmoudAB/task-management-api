@@ -22,9 +22,17 @@ jacocoTestReport {
 	dependsOn test
 
 	reports {
-		html.required = true
 		xml.required = true
+		html.required = true
 	}
+
+	classDirectories.setFrom(
+			files(classDirectories.files.collect {
+				fileTree(dir: it, exclude: [
+						'**/TaskManagementApiApplication.class'
+				])
+			})
+	)
 }
 
 test {
