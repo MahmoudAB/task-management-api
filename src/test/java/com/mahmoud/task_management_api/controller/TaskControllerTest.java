@@ -30,8 +30,7 @@ class TaskControllerTest {
 
 	@Test
 	void addTask() throws Exception{
-		TaskRequest taskRequest = new TaskRequest();
-		taskRequest.setTitle("test");
+		TaskRequest taskRequest = new TaskRequest("test");
 
 		Task testTask = new Task(taskRequest.getTitle());
 		testTask.setId(1L);
