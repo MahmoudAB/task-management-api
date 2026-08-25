@@ -4,7 +4,10 @@ import com.mahmoud.task_management_api.dto.TaskRequest;
 import com.mahmoud.task_management_api.exception.TaskNotFoundException;
 import com.mahmoud.task_management_api.model.Task;
 import com.mahmoud.task_management_api.repository.TaskRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TaskManagementService {
@@ -21,5 +24,9 @@ public class TaskManagementService {
 
     public Task getTaskById(Long id) {
         return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+    }
+
+    public List<Task> getAllTasks() {
+        return this.taskRepository.findAll();
     }
 }

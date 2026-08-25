@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,10 +55,22 @@ public class TaskManagementServiceTest {
     }
 
     @Test
-    public void getTaskByIdNotFound(){
+    public void getTaskByIdNotFoundTest(){
         Long id = 1L;
         when(taskRepository.findById(any(Long.class))).thenThrow(new TaskNotFoundException(id));
         assertThrows(TaskNotFoundException.class, () -> taskManagementService.getTaskById(id));
+    }
+
+    @Test
+    public void findAllTasksTest(){
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new Task("task 1"));
+        tasks.add(new Task("task 2"));
+        tasks.add(new Task("task 3"));
+        when(taskRepository.findAll()).thenReturn(tasks);
+        List<Task> expectedTasks = taskManagementService.getAllTasks();
+        assertEquals(3, expectedTasks.size());
+        assertEquals("task 1", expectedTasks.getFirst().getTitle());
     }
 
 }

@@ -5,6 +5,8 @@ import com.mahmoud.task_management_api.model.Task;
 import com.mahmoud.task_management_api.service.TaskManagementService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -24,5 +26,13 @@ public class TaskController {
     public Task getTaskById(@PathVariable String id){
         return this.taskManagementService.getTaskById(Long.valueOf(id));
     }
+
+    @GetMapping("all")
+    public List<Task> getAllTasks(){
+        return this.taskManagementService.getAllTasks();
+    }
+
+
+
 
 }

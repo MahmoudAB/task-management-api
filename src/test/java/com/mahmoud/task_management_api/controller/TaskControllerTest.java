@@ -12,6 +12,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,9 +46,7 @@ class TaskControllerTest {
 	}
 	@Test
 	public void addTask() throws Exception {
-
 		when(taskManagementService.createTask(any(TaskRequest.class))).thenReturn(testTask);
-
 		mockMvc.perform(post("/tasks/add")
 				.contentType(String.valueOf(MediaType.APPLICATION_JSON))
 				.content(objectMapper.writeValueAsString(taskRequest)))
@@ -58,11 +59,22 @@ class TaskControllerTest {
 	@Test
 	public void findById() throws Exception {
 		when(taskManagementService.getTaskById(1L)).thenReturn(testTask);
-
 		mockMvc.perform(get("/tasks/1")
 						.content(objectMapper.writeValueAsString(taskRequest)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.title").value("test"));
+	}
+
+	@Test
+	public void getAllTasksTest() throws Exception {
+		List<Task> tasks = new ArrayList<>();
+		tasks.add(new Task("task 1"));
+		tasks.add(new Task("task 2"));
+		when(taskManagementService.getAllTasks()).thenReturn(tasks);
+		mockMvc.perform(get("/tasks/all"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.length()").value(2))
+				.andExpect(jsonPath("$[0].title").value("task 1"));
 	}
 
 }
