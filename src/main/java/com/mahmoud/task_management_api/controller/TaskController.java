@@ -37,5 +37,10 @@ public class TaskController {
         return this.taskManagementService.updateTask(id, taskRequest);
     }
 
+    @PatchMapping("/{id}/toggle-completed")
+    public Task toggleTaskCompleted(@PathVariable Long id) {
+        return this.taskManagementService.toggleTaskCompleted(id);
+    }
+
 
 }

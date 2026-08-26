@@ -99,4 +99,31 @@ public class TaskManagementServiceTest {
                 () -> taskManagementService.updateTask(id, updateRequest));
     }
 
+    @Test
+    public void toggleTaskCompletedTest(){
+        Long id = 1L;
+        testTask.setId(id);
+        when(taskRepository.findById(id)).thenReturn(Optional.of(testTask));
+        when(taskRepository.save(testTask)).thenReturn(testTask);
+
+        Task completedTask = taskManagementService.toggleTaskCompleted(id);
+
+        assertEquals(true, completedTask.isCompleted());
+        verify(taskRepository).save(testTask);
+
+        Task incompleteTask = taskManagementService.toggleTaskCompleted(id);
+
+        assertEquals(false, incompleteTask.isCompleted());
+        verify(taskRepository, org.mockito.Mockito.times(2)).save(testTask);
+    }
+
+    @Test
+    public void toggleTaskCompletedNotFoundTest(){
+        Long id = 1L;
+        when(taskRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(TaskNotFoundException.class,
+                () -> taskManagementService.toggleTaskCompleted(id));
+    }
+
 }

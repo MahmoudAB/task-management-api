@@ -19,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -92,6 +93,19 @@ class TaskControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(1))
 				.andExpect(jsonPath("$.title").value("updated title"));
+	}
+
+	@Test
+	public void toggleTaskCompletedTest() throws Exception {
+		Task completedTask = new Task("test");
+		completedTask.setId(1L);
+		completedTask.setCompleted(true);
+		when(taskManagementService.toggleTaskCompleted(1L)).thenReturn(completedTask);
+
+		mockMvc.perform(patch("/tasks/1/toggle-completed"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.completed").value(true));
 	}
 
 }

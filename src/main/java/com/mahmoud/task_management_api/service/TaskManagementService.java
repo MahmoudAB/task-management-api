@@ -34,4 +34,10 @@ public class TaskManagementService {
         task.setTitle(taskRequest.title());
         return taskRepository.save(task);
     }
+
+    public Task toggleTaskCompleted(Long id) {
+        Task task = getTaskById(id);
+        task.setCompleted(!task.isCompleted());
+        return taskRepository.save(task);
+    }
 }
