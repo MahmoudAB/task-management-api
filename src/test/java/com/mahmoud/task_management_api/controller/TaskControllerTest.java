@@ -4,8 +4,8 @@ import com.mahmoud.task_management_api.dto.TaskRequest;
 import com.mahmoud.task_management_api.model.Task;
 import com.mahmoud.task_management_api.service.TaskManagementService;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MediaType;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -16,9 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TaskController.class)
@@ -75,6 +77,21 @@ class TaskControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.length()").value(2))
 				.andExpect(jsonPath("$[0].title").value("task 1"));
+	}
+
+	@Test
+	public void updateTaskTest() throws Exception {
+		TaskRequest updateRequest = new TaskRequest("updated title");
+		Task updatedTask = new Task(updateRequest.title());
+		updatedTask.setId(1L);
+		when(taskManagementService.updateTask(eq(1L), any(TaskRequest.class))).thenReturn(updatedTask);
+
+		mockMvc.perform(put("/tasks/1")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(updateRequest)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.title").value("updated title"));
 	}
 
 }

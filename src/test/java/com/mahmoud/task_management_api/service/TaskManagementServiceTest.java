@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class TaskManagementServiceTest {
@@ -71,6 +72,31 @@ public class TaskManagementServiceTest {
         List<Task> expectedTasks = taskManagementService.getAllTasks();
         assertEquals(3, expectedTasks.size());
         assertEquals("task 1", expectedTasks.getFirst().getTitle());
+    }
+
+    @Test
+    public void updateTaskTest(){
+        Long id = 1L;
+        TaskRequest updateRequest = new TaskRequest("updated title");
+        testTask.setId(id);
+        when(taskRepository.findById(id)).thenReturn(Optional.of(testTask));
+        when(taskRepository.save(testTask)).thenReturn(testTask);
+
+        Task updatedTask = taskManagementService.updateTask(id, updateRequest);
+
+        assertEquals(id, updatedTask.getId());
+        assertEquals("updated title", updatedTask.getTitle());
+        verify(taskRepository).save(testTask);
+    }
+
+    @Test
+    public void updateTaskNotFoundTest(){
+        Long id = 1L;
+        TaskRequest updateRequest = new TaskRequest("updated title");
+        when(taskRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(TaskNotFoundException.class,
+                () -> taskManagementService.updateTask(id, updateRequest));
     }
 
 }

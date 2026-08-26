@@ -4,7 +4,6 @@ import com.mahmoud.task_management_api.dto.TaskRequest;
 import com.mahmoud.task_management_api.exception.TaskNotFoundException;
 import com.mahmoud.task_management_api.model.Task;
 import com.mahmoud.task_management_api.repository.TaskRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +27,11 @@ public class TaskManagementService {
 
     public List<Task> getAllTasks() {
         return this.taskRepository.findAll();
+    }
+
+    public Task updateTask(Long id, TaskRequest taskRequest) {
+        Task task = getTaskById(id);
+        task.setTitle(taskRequest.title());
+        return taskRepository.save(task);
     }
 }

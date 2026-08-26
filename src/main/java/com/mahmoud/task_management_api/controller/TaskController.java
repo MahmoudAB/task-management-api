@@ -32,7 +32,10 @@ public class TaskController {
         return this.taskManagementService.getAllTasks();
     }
 
-
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest) {
+        return this.taskManagementService.updateTask(id, taskRequest);
+    }
 
 
 }
