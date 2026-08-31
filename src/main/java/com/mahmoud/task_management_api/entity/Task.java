@@ -1,4 +1,4 @@
-package com.mahmoud.task_management_api.model;
+package com.mahmoud.task_management_api.entity;
 
 import jakarta.persistence.*;
 

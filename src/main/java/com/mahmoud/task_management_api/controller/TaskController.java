@@ -1,7 +1,7 @@
 package com.mahmoud.task_management_api.controller;
 
 import com.mahmoud.task_management_api.dto.TaskRequest;
-import com.mahmoud.task_management_api.model.Task;
+import com.mahmoud.task_management_api.entity.Task;
 import com.mahmoud.task_management_api.service.TaskManagementService;
 import org.springframework.web.bind.annotation.*;
 
